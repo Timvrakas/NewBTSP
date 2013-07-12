@@ -19,8 +19,8 @@ public class start {
 
 	static Auth auth = new Auth();
 	public static void main(String args[]) throws MalformedURLException, IOException, InterruptedException{
-		auth.Login("ben1234neb", "ben5x62fb");
-		
+		//auth.login("ben1234neb", "ben5x62fb");
+		auth.refresh();
 		Set<Downloadable> files = ResourcesDownload.getResourceFiles(new File("/users/timv/desktop"));
 		DownloadJob j = new DownloadJob("Name", false, files);
 		
