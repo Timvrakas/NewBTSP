@@ -17,7 +17,7 @@ import org.w3c.dom.NodeList;
 
 public class ResourcesDownload {
 
-	private Set<Downloadable> getResourceFiles(File baseDirectory) {
+	public static Set<Downloadable> getResourceFiles(File baseDirectory) {
 		 Set<Downloadable> result = new HashSet<Downloadable>();
 		  try{
 		  URL resourceUrl = new URL("https://s3.amazonaws.com/Minecraft.Resources/");
@@ -47,6 +47,7 @@ public class ResourcesDownload {
 		/*     */             }
 		/* 285 */             Downloadable downloadable = new Downloadable(new URL("https://s3.amazonaws.com/Minecraft.Resources/" + key), file, false);
 		/* 286 */             downloadable.setExpectedSize(size);
+		
 		/* 287 */             result.add(downloadable);
 		/*     */           }
 		/*     */         }

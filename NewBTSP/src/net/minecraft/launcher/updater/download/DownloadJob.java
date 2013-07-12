@@ -43,7 +43,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 /*  40 */     this.remainingFiles.addAll(downloadables);
 /*     */ 
 /*  42 */     for (Downloadable downloadable : downloadables) {
-/*  47 */         sizeTotal =+ downloadable.getExpectedSize();
+/*  47 */         sizeTotal += downloadable.getExpectedSize();
 /*     */       }
 /*  49 */
 /*     */     }
@@ -55,7 +55,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 /*  56 */     for (Downloadable downloadable : downloadables) {
 /*  57 */       this.allFiles.add(downloadable);
 /*  58 */       this.remainingFiles.add(downloadable);
-	/*  47 */         sizeTotal =+ downloadable.getExpectedSize();
+	/*  47 */         sizeTotal += downloadable.getExpectedSize();
 	       		
 /*     */       
 /*  65 */       }
@@ -93,7 +93,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 	
 /*     */         try {
 /* 102 */           String result = downloadable.download();
-/* 103 */           this.successful.add(downloadable);
+/* 103 */           
 					sizeDone += downloadable.getExpectedSize();
 /* 104 */           System.out.println("Finished downloading " + downloadable.getTarget() + " for job '" + this.name + "'" + ": " + result);
 /*     */         }catch (Throwable t) {
@@ -101,6 +101,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 					t.printStackTrace();
 /* 107 */           this.remainingFiles.add(downloadable);
 /*     */         }
+					this.successful.add(downloadable);
 /*     */       }
 /*     */     }
 /* 111 */
@@ -117,7 +118,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 /*     */   }
 /*     */ 
 /*     */   public boolean isComplete() {
-/* 125 */     return (this.started) && (this.remainingFiles.isEmpty()) && (this.remainingThreads.get() == 0);
+/* 125 */     return (this.started) && (this.remainingFiles.isEmpty());
 /*     */   }
 /*     */ 
 /*     */   public int getFailures() {
@@ -133,9 +134,12 @@ import java.util.concurrent.atomic.AtomicInteger;
 /*     */   }
 /*     */ 
 /*     */ 
-/*     */   public float getProgress() {
-/* 155 */     float result = -1.0F;
-/* 156 */     result = (float)sizeDone / (float)sizeTotal;
-/* 157 */     return result;
+/*     */   public int getProgress() {
+/* 155 */     long result;
+				if(sizeTotal > 0)
+/* 156 */     result = (sizeDone * 100) / sizeTotal;
+				else
+			  result = 100;
+/* 157 */     	return (int) result;
 /*     */   }
 /*     */ }

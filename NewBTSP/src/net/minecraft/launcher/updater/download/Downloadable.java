@@ -64,10 +64,7 @@
 /*     */ 
 /*  59 */       if (status == 304)
 /*  60 */         return "Used own copy as it matched etag";
-/*  61 */       if (status == 200) {
-/*  62 */         if (this.expectedSize == 0L)
-/*  63 */           this.expectedSize = connection.getContentLength(); 
-/*     */         }
+/*  61 */       
 /*     */ 
 /*  68 */         InputStream inputStream = (connection.getInputStream());
 /*  69 */         FileOutputStream outputStream = new FileOutputStream(this.target);
@@ -94,7 +91,7 @@
 				}
 /*     */ 
 /*     */   protected HttpURLConnection makeConnection(String localMd5) throws IOException {
-/*  99 */     HttpURLConnection connection = (HttpURLConnection)this.url.openConnection(this.proxy);
+/*  99 */     HttpURLConnection connection = (HttpURLConnection)this.url.openConnection();
 /* 102 */     connection.setUseCaches(false);
 /* 103 */     connection.setDefaultUseCaches(false);
 /* 104 */     connection.setRequestProperty("Cache-Control", "no-store,max-age=0,no-cache");
