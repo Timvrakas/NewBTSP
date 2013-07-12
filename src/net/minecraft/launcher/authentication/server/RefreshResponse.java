@@ -1,0 +1,25 @@
+/*    */ package net.minecraft.launcher.authentication.server;
+/*    */ 
+
+/*    */ 
+/*    */ public class RefreshResponse extends Response
+/*    */ {
+/*    */   private String accessToken;
+/*    */   private String clientToken;
+/*    */ 
+/*    */   public String getAccessToken()
+/*    */   {
+/* 14 */     return this.accessToken;
+/*    */   }
+/*    */ 
+/*    */   public String getClientToken() {
+/* 18 */     return this.clientToken;
+/*    */   }
+/*    */ 
+/*    */  
+/*    */ }
+
+/* Location:           /Users/timv/Library/Application Support/minecraft/launcher.jar
+ * Qualified Name:     net.minecraft.launcher.authentication.yggdrasil.RefreshResponse
+ * JD-Core Version:    0.6.2
+ */
