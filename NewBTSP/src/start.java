@@ -1,16 +1,13 @@
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.Set;
-import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 import net.btsp.Auth;
 import net.btsp.ResourcesDownload;
-import net.minecraft.launcher.Http;
 import net.minecraft.launcher.updater.download.DownloadJob;
 import net.minecraft.launcher.updater.download.Downloadable;
 
@@ -24,7 +21,7 @@ public class start {
 		Set<Downloadable> files = ResourcesDownload.getResourceFiles(new File("/users/timv/desktop"));
 		DownloadJob j = new DownloadJob("Name", false, files);
 		
-		ThreadPoolExecutor t = new ThreadPoolExecutor(8, 8, 0L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue());
+		ThreadPoolExecutor t = new ThreadPoolExecutor(8, 8, 0L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<Runnable>());
 		j.startDownloading(t);
 		for ( ; ; ) {
 			Thread.sleep(1000);

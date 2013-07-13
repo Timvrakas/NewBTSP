@@ -3,6 +3,7 @@ package net.btsp;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Properties;
 import java.util.UUID;
 
 import net.minecraft.launcher.Http;
@@ -22,6 +23,7 @@ public class Auth {
 	private String accessToken = null;
 	private static UUID uuid = null;
 	private static final String BASE_URL = "https://authserver.mojang.com/";
+	public boolean loggedIn = false;
 	
 	public void login(String name, String pass){
 		
@@ -31,8 +33,9 @@ public class Auth {
 		    System.out.println(uuid.toString());
 		     try {
 				AuthenticationResponse response = makeRequest(new URL(BASE_URL+"authenticate"), request, AuthenticationResponse.class);
-				System.out.println(response.getAccessToken());
+				System.out.println("Logged In with Credentials and recived: "+response.getAccessToken());
 				accessToken = response.getAccessToken();
+				loggedIn = true;
 		     } catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -42,14 +45,14 @@ public class Auth {
 	
 	public void refresh(){
 		    System.out.println("Logging in with access token");
-		    System.out.println(uuid.toString());
 		   try {
 		      RefreshRequest request = new RefreshRequest(accessToken, uuid.toString());
 			  RefreshResponse response = (RefreshResponse)makeRequest(new URL(BASE_URL+"refresh"), request, RefreshResponse.class);
 		      if (!response.getClientToken().equals(uuid.toString()))
 		    	  throw new Exception("Server requested we change our client token. Don't know how to handle this!");
 		      this.accessToken = response.getAccessToken();
-		      System.out.println(response.getAccessToken());
+		      loggedIn = true;
+		      System.out.println("Refreshed Token and recived: "+response.getAccessToken());
 		} catch (Exception e) {
 				e.printStackTrace();
 			} 
@@ -60,12 +63,21 @@ public class Auth {
 			  try {
 				  InvalidateRequest request = new InvalidateRequest(accessToken, uuid.toString());
 				makeRequest(new URL(BASE_URL+"invalidate"), request, Response.class);
+				loggedIn = false;
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 	}
 	
-	
+	public void loadFromStorage(Properties prop){
+		String uuidString = prop.getProperty("UUID");
+		if(uuidString != null)
+			uuid = UUID.fromString(uuidString);
+		else
+			uuid = UUID.randomUUID();
+		accessToken = prop.getProperty("Token");
+		
+	}
 	
  	protected <T extends Response> T makeRequest(URL url, Object input, Class<T> classOfT) throws Exception {
 		     try {
@@ -83,4 +95,6 @@ public class Auth {
 		     }
 		  }
 	
+ 	
+ 	
 }
