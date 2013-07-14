@@ -17,17 +17,17 @@
 /*    */   {
 /* 17 */     if (jvmPath == null) jvmPath = OperatingSystem.getCurrentPlatform().getJavaDir();
 /* 18 */     this.jvmPath = jvmPath;
-/* 19 */     this.commands = new ArrayList(commands.length);
+/* 19 */     this.commands = new ArrayList<String>(commands.length);
 /* 20 */     addCommands(commands);
 /*    */   }
 /*    */ 
 /*    */   public JavaProcess start() throws IOException {
-/* 24 */     List full = getFullCommands();
+/* 24 */     List<String> full = getFullCommands();
 /* 25 */     return new JavaProcess(full, new ProcessBuilder(full).directory(this.directory).redirectErrorStream(true).start());
 /*    */   }
 /*    */ 
 /*    */   public List<String> getFullCommands() {
-/* 29 */     List result = new ArrayList(this.commands);
+/* 29 */     List<String> result = new ArrayList<String>(this.commands);
 /* 30 */     result.add(0, getJavaPath());
 /* 31 */     return result;
 /*    */   }
@@ -38,10 +38,6 @@
 /*    */ 
 /*    */   public void addCommands(String[] commands) {
 /* 39 */     this.commands.addAll(Arrays.asList(commands));
-/*    */   }
-/*    */ 
-/*    */   public void addSplitCommands(String commands) {
-/* 43 */     addCommands(commands.split(" "));
 /*    */   }
 /*    */ 
 /*    */   public JavaProcessLauncher directory(File directory) {
@@ -58,10 +54,7 @@
 /* 57 */     return this.jvmPath;
 /*    */   }
 /*    */ 
-/*    */   public String toString()
-/*    */   {
-/* 62 */     return "JavaProcessLauncher[commands=" + this.commands + ", java=" + this.jvmPath + "]";
-/*    */   }
+/*    */  
 /*    */ }
 
 /* Location:           /Users/timv/Library/Application Support/minecraft/launcher.jar

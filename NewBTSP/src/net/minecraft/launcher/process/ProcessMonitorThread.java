@@ -5,7 +5,6 @@
 /*    */ import java.io.InputStreamReader;
 /*    */ import java.util.logging.Level;
 /*    */ import java.util.logging.Logger;
-/*    */ import net.minecraft.launcher.Launcher;
 /*    */ 
 /*    */ public class ProcessMonitorThread extends Thread
 /*    */ {
@@ -25,8 +24,7 @@
 /* 24 */     while (this.process.isRunning()) {
 /*    */       try {
 /* 26 */         while ((line = buf.readLine()) != null) {
-/* 27 */           Launcher.getInstance().println("Client> " + line);
-/* 28 */           this.process.getSysOutLines().add(line);
+/* 27 */           System.out.println("Client> " + line);
 /*    */         }
 /*    */       } catch (IOException ex) {
 /* 31 */         Logger.getLogger(ProcessMonitorThread.class.getName()).log(Level.SEVERE, null, ex);

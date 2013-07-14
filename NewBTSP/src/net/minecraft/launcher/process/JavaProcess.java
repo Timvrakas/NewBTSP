@@ -4,10 +4,9 @@
 /*    */ 
 /*    */ public class JavaProcess
 /*    */ {
-/*    */   private static final int MAX_SYSOUT_LINES = 5;
+/*    */   
 /*    */   private final List<String> commands;
 /*    */   private final Process process;
-/* 10 */   private final LimitedCapacityList<String> sysOutLines = new LimitedCapacityList(String.class, 5);
 /*    */   private JavaProcessRunnable onExit;
 /* 12 */   private ProcessMonitorThread monitor = new ProcessMonitorThread(this);
 /*    */ 
@@ -30,9 +29,6 @@
 /* 30 */     return this.process.toString();
 /*    */   }
 /*    */ 
-/*    */   public LimitedCapacityList<String> getSysOutLines() {
-/* 34 */     return this.sysOutLines;
-/*    */   }
 /*    */ 
 /*    */   public boolean isRunning() {
 /*    */     try {
@@ -70,11 +66,7 @@
 /*    */     }
 /*    */   }
 /*    */ 
-/*    */   public String toString()
-/*    */   {
-/* 76 */     return "JavaProcess[commands=" + this.commands + ", isRunning=" + isRunning() + "]";
-/*    */   }
-/*    */ 
+/*    */
 /*    */   public void stop() {
 /* 80 */     this.process.destroy();
 /*    */   }
