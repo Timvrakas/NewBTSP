@@ -15,23 +15,20 @@
 /*    */ 
 /* 48 */     return this.action;
 /*    */   }
-/*    */ 
-/*    */   public String toString()
-/*    */   {
-/* 53 */     return "Rule{action=" + this.action + ", os=" + this.os + '}';
-/*    */   }
-/*    */ 
+
 /*    */   public static enum Action
 /*    */   {
 /* 10 */     ALLOW, 
 /* 11 */     DISALLOW;
 /*    */   }
+
 /*    */   public class OSRestriction {
 /*    */     private OperatingSystem name;
 /*    */     private String version;
 /*    */ 
 /*    */     public OSRestriction() {  } 
-/* 19 */     public boolean isCurrentOperatingSystem() { if ((this.name != null) && (this.name != OperatingSystem.getCurrentPlatform())) return false;
+/* 19 */     public boolean isCurrentOperatingSystem() {
+	         if ((this.name != null) && (this.name != OperatingSystem.getCurrentPlatform())) return false;
 /*    */ 
 /* 21 */       if (this.version != null)
 /*    */         try {
@@ -39,20 +36,10 @@
 /* 24 */           Matcher matcher = pattern.matcher(System.getProperty("os.version"));
 /* 25 */           if (!matcher.matches()) return false;
 /*    */         }
-/*    */         catch (Throwable localThrowable)
-/*    */         {
-/*    */         }
+/*    */         catch (Throwable localThrowable){}
 /* 30 */       return true;
 /*    */     }
 /*    */ 
-/*    */     public String toString()
-/*    */     {
-/* 35 */       return "OSRestriction{name=" + this.name + ", version='" + this.version + '\'' + '}';
-/*    */     }
 /*    */   }
 /*    */ }
 
-/* Location:           /Users/timv/Library/Application Support/minecraft/launcher.jar
- * Qualified Name:     net.minecraft.launcher.versions.Rule
- * JD-Core Version:    0.6.2
- */

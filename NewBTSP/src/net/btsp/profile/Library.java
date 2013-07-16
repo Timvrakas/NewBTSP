@@ -7,7 +7,6 @@
 /*     */ 
 /*     */ public class Library
 /*     */ {
-/*     */   private static final String LIBRARY_DOWNLOAD_BASE = "https://s3.amazonaws.com/Minecraft.Download/libraries/";
 /*     */   private String name;
 /*     */   private List<Rule> rules;
 /*     */   private Map<OperatingSystem, String> natives;
@@ -31,7 +30,7 @@
 /*     */   public Library addNative(OperatingSystem operatingSystem, String name) {
 /*  29 */     if ((operatingSystem == null) || (!operatingSystem.isSupported())) throw new IllegalArgumentException("Cannot add native for unsupported OS");
 /*  30 */     if ((name == null) || (name.length() == 0)) throw new IllegalArgumentException("Cannot add native for null or empty name");
-/*  31 */     if (this.natives == null) this.natives = new EnumMap(OperatingSystem.class);
+/*  31 */     if (this.natives == null) this.natives = new EnumMap<OperatingSystem, String>(OperatingSystem.class);
 /*  32 */     this.natives.put(operatingSystem, name);
 /*  33 */     return this;
 /*     */   }
@@ -92,12 +91,7 @@
 /*  89 */     String[] parts = this.name.split(":", 3);
 /*  90 */     return String.format("%s-%s-%s.jar", new Object[] { parts[1], parts[2], classifier });
 /*     */   }
-/*     */ 
-/*     */   public String toString()
-/*     */   {
-/*  95 */     return "Library{name='" + this.name + '\'' + ", rules=" + this.rules + ", natives=" + this.natives + ", extract=" + this.extract + '}';
-/*     */   }
-/*     */ 
+
 /*     */   public String getDownloadUrl()
 /*     */   {
 /* 104 */     if (this.url != null) return this.url;

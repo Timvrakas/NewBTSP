@@ -6,7 +6,7 @@
 /*    */ 
 /*    */ public class ExtractRules
 /*    */ {
-/*  9 */   private List<String> exclude = new ArrayList();
+/*  9 */   private List<String> exclude = new ArrayList<String>();
 /*    */ 
 /*    */   public ExtractRules() {
 /*    */   }
@@ -30,8 +30,3 @@
 /* 29 */     return true;
 /*    */   }
 /*    */ }
-
-/* Location:           /Users/timv/Library/Application Support/minecraft/launcher.jar
- * Qualified Name:     net.minecraft.launcher.versions.ExtractRules
- * JD-Core Version:    0.6.2
- */

@@ -25,7 +25,7 @@
 /*    */ 
 /*    */   static
 /*    */   {
-/*  9 */     lookup = new HashMap();
+/*  9 */     lookup = new HashMap<String, ReleaseType>();
 /*    */ 
 /* 13 */     for (ReleaseType type : values())
 /* 14 */       lookup.put(type.getName(), type);

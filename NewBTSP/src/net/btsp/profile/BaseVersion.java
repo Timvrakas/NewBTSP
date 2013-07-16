@@ -1,27 +1,20 @@
 /*     */ package net.btsp.profile;
-/*     */ 
+
 /*     */ import java.io.File;
 import java.net.MalformedURLException;
-import java.net.Proxy;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
 import net.minecraft.launcher.OperatingSystem;
 import net.minecraft.launcher.updater.download.Downloadable;
-
-import com.sun.corba.se.impl.util.Version;
 
 /*     */ public class BaseVersion
 /*     */ {
 /*     */   private String id;
-/*     */   private Date time;
-/*     */   private Date releaseTime;
 /*     */   private ReleaseType type;
 /*     */   private String minecraftArguments;
 /*     */   private List<Library> libraries;
@@ -30,30 +23,20 @@ import com.sun.corba.se.impl.util.Version;
 /*     */   private String incompatibilityReason;
 /*     */   private List<Rule> rules;
 /*     */ 
-/*     */   public BaseVersion()
-/*     */   {
-/*     */   }
+/*     */   public BaseVersion(){}
 /*     */ 
-/*     */   public BaseVersion(String id, Date releaseTime, Date updateTime, ReleaseType type, String mainClass, String minecraftArguments)
+/*     */   public BaseVersion(String id, ReleaseType type, String mainClass, String minecraftArguments)
 /*     */   {
 /*  28 */     if ((id == null) || (id.length() == 0)) throw new IllegalArgumentException("ID cannot be null or empty");
-/*  29 */     if (releaseTime == null) throw new IllegalArgumentException("Release time cannot be null");
-/*  30 */     if (updateTime == null) throw new IllegalArgumentException("Update time cannot be null");
 /*  31 */     if (type == null) throw new IllegalArgumentException("Release type cannot be null");
 /*  32 */     if ((mainClass == null) || (mainClass.length() == 0)) throw new IllegalArgumentException("Main class cannot be null or empty");
 /*  33 */     if (minecraftArguments == null) throw new IllegalArgumentException("Process arguments cannot be null or empty");
 /*     */ 
 /*  35 */     this.id = id;
-/*  36 */     this.releaseTime = releaseTime;
-/*  37 */     this.time = updateTime;
 /*  38 */     this.type = type;
 /*  39 */     this.mainClass = mainClass;
-/*  40 */     this.libraries = new ArrayList();
+/*  40 */     this.libraries = new ArrayList<Library>();
 /*  41 */     this.minecraftArguments = minecraftArguments;
-/*     */   }
-/*     */ 
-/*     */   public BaseVersion(BaseVersion version) {
-/*  45 */     this(version.getId(), version.getReleaseTime(), version.getUpdatedTime(), version.getType(), version.getMainClass(), version.getMinecraftArguments());
 /*     */   }
 /*     */ 
 /*     */ 
@@ -67,15 +50,6 @@ import com.sun.corba.se.impl.util.Version;
 /*  59 */     return this.type;
 /*     */   }
 /*     */ 
-/*     */   public Date getUpdatedTime()
-/*     */   {
-/*  64 */     return this.time;
-/*     */   }
-/*     */ 
-/*     */   public Date getReleaseTime()
-/*     */   {
-/*  69 */     return this.releaseTime;
-/*     */   }
 /*     */ 
 /*     */   public Collection<Library> getLibraries() {
 /*  73 */     return this.libraries;
@@ -83,18 +57,6 @@ import com.sun.corba.se.impl.util.Version;
 /*     */ 
 /*     */   public String getMainClass() {
 /*  77 */     return this.mainClass;
-/*     */   }
-/*     */ 
-/*     */   public void setUpdatedTime(Date time)
-/*     */   {
-/*  82 */     if (time == null) throw new IllegalArgumentException("Time cannot be null");
-/*  83 */     this.time = time;
-/*     */   }
-/*     */ 
-/*     */   public void setReleaseTime(Date time)
-/*     */   {
-/*  88 */     if (time == null) throw new IllegalArgumentException("Time cannot be null");
-/*  89 */     this.releaseTime = time;
 /*     */   }
 /*     */ 
 /*     */   public void setType(ReleaseType type)
@@ -108,8 +70,8 @@ import com.sun.corba.se.impl.util.Version;
 /* 100 */     this.mainClass = mainClass;
 /*     */   }
 /*     */ 
-/*     */   public Collection<Library> getRelevantLibraries() {
-/* 104 */     List result = new ArrayList();
+/*     */   private Collection<Library> getRelevantLibraries() {
+/* 104 */     List<Library> result = new ArrayList<Library>();
 /*     */ 
 /* 106 */     for (Library library : this.libraries) {
 /* 107 */       if (library.appliesToCurrentEnvironment()) {
@@ -122,7 +84,7 @@ import com.sun.corba.se.impl.util.Version;
 /*     */ 
 /*     */   public Collection<File> getClassPath(OperatingSystem os, File base) {
 /* 116 */     Collection<Library> libraries = getRelevantLibraries();
-/* 117 */     Collection result = new ArrayList();
+/* 117 */     Collection<File> result = new ArrayList<File>();
 /*     */ 
 /* 119 */     for (Library library : libraries) {
 /* 120 */       if (library.getNatives() == null) {
@@ -137,10 +99,10 @@ import com.sun.corba.se.impl.util.Version;
 /*     */ 
 /*     */   public Collection<String> getExtractFiles(OperatingSystem os) {
 /* 131 */     Collection<Library> libraries = getRelevantLibraries();
-/* 132 */     Collection result = new ArrayList();
+/* 132 */     Collection<String> result = new ArrayList<String>();
 /*     */ 
 /* 134 */     for (Library library : libraries) {
-/* 135 */       Map natives = library.getNatives();
+/* 135 */       Map<OperatingSystem, String> natives = library.getNatives();
 /*     */ 
 /* 137 */       if ((natives != null) && (natives.containsKey(os))) {
 /* 138 */         result.add("libraries/" + library.getArtifactPath((String)natives.get(os)));
@@ -151,7 +113,7 @@ import com.sun.corba.se.impl.util.Version;
 /*     */   }
 /*     */ 
 /*     */   public Set<String> getRequiredFiles(OperatingSystem os) {
-/* 146 */     Set neededFiles = new HashSet();
+/* 146 */     Set<String> neededFiles = new HashSet<String>();
 /*     */ 
 /* 148 */     for (Library library : getRelevantLibraries()) {
 /* 149 */       if (library.getNatives() != null) {
@@ -165,21 +127,20 @@ import com.sun.corba.se.impl.util.Version;
 /* 157 */     return neededFiles;
 /*     */   }
 /*     */ 
-/*     */   public Set<Downloadable> getRequiredDownloadables(OperatingSystem os, Proxy proxy, File targetDirectory, boolean ignoreLocalFiles) throws MalformedURLException {
-/* 161 */     Set neededFiles = new HashSet();
-/*     */ 
+/*     */   public Set<Downloadable> getRequiredDownloadables(OperatingSystem os, File targetDirectory, boolean ignoreLocalFiles) throws MalformedURLException {
+/* 161 */     Set<Downloadable> neededFiles = new HashSet<Downloadable>();
+
 /* 163 */     for (Library library : getRelevantLibraries()) {
 /* 164 */       String file = null;
-/*     */ 
 /* 166 */       if (library.getNatives() != null) {
 /* 167 */         String natives = (String)library.getNatives().get(os);
 /* 168 */         if (natives != null)
 /* 169 */           file = library.getArtifactPath(natives);
-/*     */       }
-/*     */       else {
+/*     */       
+				}else {
 /* 172 */         file = library.getArtifactPath();
 /*     */       }
-/*     */ 
+ 
 /* 175 */       if (file != null) {
 /* 176 */         URL url = new URL(library.getDownloadUrl() + file);
 /* 177 */         neededFiles.add(new Downloadable(url, new File(targetDirectory, "libraries/" + file), ignoreLocalFiles));
@@ -187,11 +148,6 @@ import com.sun.corba.se.impl.util.Version;
 /*     */     }
 /*     */ 
 /* 181 */     return neededFiles;
-/*     */   }
-/*     */ 
-/*     */   public String toString()
-/*     */   {
-/* 186 */     return "CompleteVersion{id='" + this.id + '\'' + ", time=" + this.time + ", type=" + this.type + ", libraries=" + this.libraries + ", mainClass='" + this.mainClass + '\'' + ", minimumLauncherVersion=" + this.minimumLauncherVersion + '}';
 /*     */   }
 /*     */ 
 /*     */   public String getMinecraftArguments()
@@ -227,9 +183,5 @@ import com.sun.corba.se.impl.util.Version;
 /*     */   public String getIncompatibilityReason() {
 /* 226 */     return this.incompatibilityReason;
 /*     */   }
-/*     */ }
-
-/* Location:           /Users/timv/Library/Application Support/minecraft/launcher.jar
- * Qualified Name:     net.minecraft.launcher.versions.CompleteVersion
- * JD-Core Version:    0.6.2
- */
+/*     */ 
+}
