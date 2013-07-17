@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,6 +42,7 @@ public class GetVersions {
 						for(Entry<Integer, Map<String, String>> entry : mcver.entrySet()){
 							builds.add(entry.getValue().get("version"));
 							}
+						Collections.reverse(builds);
 						result.put(mcversEntry.getKey(),builds);
 						}
 					return result;
