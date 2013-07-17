@@ -1,6 +1,8 @@
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -19,6 +21,7 @@ public class start {
 
 	static Auth auth = new Auth();
 	public static void main(String args[]) throws MalformedURLException, IOException, InterruptedException{
+		File w = new File("/Users/timv/Downloads/");
 		//auth.login("ben1234neb", "ben5x62fb");
 		//auth.refresh();
 		
@@ -28,11 +31,13 @@ public class start {
 		//JavaProcess jp = j.start();
 		
 		Long time = System.currentTimeMillis();
-		Map<String, List<String>> m = GetVersions.getVersions(new File("/Users/timv/Downloads/json2"));
+		Map<String, List<String>> m = GetVersions.getVersions(new File(w,"json2"));
 		System.out.println(System.currentTimeMillis()-time);
 		
-		/*
-		Set<Downloadable> files = ResourcesDownload.getResourceFiles(new File("/users/timv/desktop"));
+		Set<Downloadable> files = new HashSet();
+		files.add(new Downloadable(new URL(""), new File(w,"json2"), true));
+		
+		/*Set<Downloadable> files = ResourcesDownload.getResourceFiles(new File("/users/timv/desktop"));
 				DownloadJob j = new DownloadJob("Name", false, files);
 		ThreadPoolExecutor t = new ThreadPoolExecutor(8, 8, 0L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<Runnable>());
 		j.startDownloading(t);
