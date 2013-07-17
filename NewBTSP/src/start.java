@@ -28,7 +28,7 @@ public class start {
 		//JavaProcess jp = j.start();
 		
 		Long time = System.currentTimeMillis();
-		Map<String, List<String>> m = GetVersions.getVersions();
+		Map<String, List<String>> m = GetVersions.getVersions(new File("/Users/timv/Downloads/json2"));
 		System.out.println(System.currentTimeMillis()-time);
 		
 		/*

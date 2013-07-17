@@ -1,9 +1,11 @@
 package net.minecraft.launcher.updater.download;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.Type;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -18,11 +20,11 @@ import com.google.gson.stream.JsonReader;
 public class GetVersions {
 	static Gson gson = new Gson();
 	
-	public static Map<String,List<String>> getVersions() throws IOException{
+	public static Map<String,List<String>> getVersions(File file) throws IOException{
 		
 			Map<String,List<String>> result = new HashMap<String, List<String>>();
-			URL url = new URL("http://files.minecraftforge.net/minecraftforge/json2");
-			JsonReader reader = new JsonReader(new InputStreamReader(url.openStream(), "UTF-8"));
+			InputStream in = new FileInputStream(file);
+			JsonReader reader = new JsonReader(new InputStreamReader(in, "UTF-8"));
 	        JsonParser parser = new JsonParser();
 	        reader.beginObject();
 	        reader.nextName();
