@@ -21,7 +21,7 @@ public class start {
 		//auth.login("ben1234neb", "ben5x62fb");
 		auth.refresh();
 		
-		//hi tim
+		
 		JavaProcessLauncher j = new JavaProcessLauncher(null, args);
 		j.directory(new File("/Users/timv/desktop/test/"));
 		JavaProcess jp = j.start();
