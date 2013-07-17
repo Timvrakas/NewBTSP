@@ -25,9 +25,9 @@ public class GetVersions {
 			JsonReader reader = new JsonReader(new InputStreamReader(url.openStream(), "UTF-8"));
 	        JsonParser parser = new JsonParser();
 	        reader.beginObject();
-	        System.out.println(reader.nextName());
-	        System.out.println(reader.nextString());
-	        System.out.println(reader.nextName());
+	        reader.nextName();
+	        reader.nextString();
+	        reader.nextName();
 	  
 	        Type typeOfHashMap = new TypeToken<Map<String,Map<Integer,Map<String,Object>>>>() { }.getType();
 	        Map<String,Map<Integer,Map<String,String>>> mcvers = gson.fromJson(parser.parse(reader),typeOfHashMap);

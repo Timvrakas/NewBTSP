@@ -1,7 +1,8 @@
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.net.URL;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -9,11 +10,9 @@ import java.util.concurrent.TimeUnit;
 
 import net.btsp.Auth;
 import net.btsp.ResourcesDownload;
-import net.minecraft.launcher.Http;
-import net.minecraft.launcher.process.JavaProcess;
-import net.minecraft.launcher.process.JavaProcessLauncher;
 import net.minecraft.launcher.updater.download.DownloadJob;
 import net.minecraft.launcher.updater.download.Downloadable;
+import net.minecraft.launcher.updater.download.GetVersions;
 
 
 public class start {
@@ -28,10 +27,11 @@ public class start {
 		//.directory(new File("/Users/timv/desktop/test/"));
 		//JavaProcess jp = j.start();
 		
+		Long time = System.currentTimeMillis();
+		Map<String, List<String>> m = GetVersions.getVersions();
+		System.out.println(System.currentTimeMillis()-time);
 		
-		
-		
-		
+		/*
 		Set<Downloadable> files = ResourcesDownload.getResourceFiles(new File("/users/timv/desktop"));
 				DownloadJob j = new DownloadJob("Name", false, files);
 		ThreadPoolExecutor t = new ThreadPoolExecutor(8, 8, 0L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<Runnable>());
@@ -45,7 +45,7 @@ public class start {
 				break;
 			}
 		}
-		//System.out.println(Http.performGet(new URL("https://s3.amazonaws.com/Minecraft.Download/" + "versions/1.6.2.jar")));
+		*/
 	}
 	
 	
