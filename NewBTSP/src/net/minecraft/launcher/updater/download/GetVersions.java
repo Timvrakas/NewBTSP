@@ -17,8 +17,15 @@ import com.google.gson.Gson;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonToken;
 
 public class GetVersions {
+	public class Promos {
+	public String build;
+	public Map <String, Map <String, Object>> files;
+		
+	}
+
 	static Gson gson = new Gson();
 	
 	public static Map<String,List<String>> getVersions(File file) throws IOException{
@@ -28,10 +35,15 @@ public class GetVersions {
 			JsonReader reader = new JsonReader(new InputStreamReader(in, "UTF-8"));
 	        JsonParser parser = new JsonParser();
 	        reader.beginObject();
-	        reader.nextName();
-	        reader.nextString();
-	        reader.nextName();
-	  
+	        while(reader.hasNext()){
+	        	if(reader.peek()==JsonToken.NAME){
+	        		if(reader.nextName().equalsIgnoreCase("mcversion")){
+	        			break;
+	        		}
+	        	}else
+	        		reader.skipValue();
+	        	}
+	        
 	        Type typeOfHashMap = new TypeToken<Map<String,Map<Integer,Map<String,Object>>>>() { }.getType();
 	        Map<String,Map<Integer,Map<String,String>>> mcvers = gson.fromJson(parser.parse(reader),typeOfHashMap);
 			
@@ -45,6 +57,35 @@ public class GetVersions {
 						Collections.reverse(builds);
 						result.put(mcversEntry.getKey(),builds);
 						}
-					return result;
+				System.out.println("hi");
+				
+				while(reader.hasNext()){
+		        	if(reader.peek()==JsonToken.NAME){
+		        		String s = reader.nextName();
+		        		System.out.println(s);
+		        		if(s.equalsIgnoreCase("promos")){
+		        			System.out.println(s);
+		        			break;
+		        		}
+		        	}else
+		        		reader.skipValue();
+		        	}
+				
+				
+				typeOfHashMap = new TypeToken<Map<String,Promos>>() { }.getType();
+		        Map<String,Promos> promos = gson.fromJson(parser.parse(reader),typeOfHashMap);
+				
+		        for(Entry<String, Promos> promosEntry : promos.entrySet()){
+					if(promosEntry.getKey().startsWith("recommended")){
+						Map<String, Map<String, Object>> promo = promosEntry.getValue().files;
+						String value = promo.get("src").get("version")+" ("+promosEntry.getKey()+")";
+						System.out.println(value);
+						String version = (String) promo.get("src").get("mcversion");
+						List<String>  list = result.get(version);
+						list.add(0, value);
+						result.put(version, list);
 					}
+		        }
+				return result;		
 				}
+			}

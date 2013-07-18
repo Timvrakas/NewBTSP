@@ -40,7 +40,9 @@ public class start {
 		System.out.print("Time:");
 		System.out.println(System.currentTimeMillis()-time);
 		List<String> p = m.get("1.6.2");
-		String path = "minecraftforge-universal-1.6.2-"+p.get(0)+".jar";
+		
+		String reco = p.get(0).split(" ")[0];
+		String path = "minecraftforge-universal-1.6.2-"+reco+".jar";
 		
 		Set<Downloadable> files = new HashSet<Downloadable>();
 		files.add(new Downloadable(new URL("http://files.minecraftforge.net/"+path), new File(w,path), true));
