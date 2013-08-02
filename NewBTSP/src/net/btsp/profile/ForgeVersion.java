@@ -16,7 +16,7 @@ import net.minecraft.launcher.updater.download.Downloadable;
 
 public class ForgeVersion {
 	private String id;
-	/*     */   private ReleaseType type;
+	
 	/*     */   private String minecraftArguments;
 	/*     */   private List<Library> libraries;
 	/*     */   private String mainClass;
@@ -26,31 +26,24 @@ public class ForgeVersion {
 
 	/*     */   public ForgeVersion(){}
 	/*     */ 
-	/*     */   public ForgeVersion(String id, ReleaseType type, String mainClass, String minecraftArguments)
+	/*     */   public ForgeVersion(String id, String mainClass, String minecraftArguments)
 	/*     */   {
 	/*  28 */     if ((id == null) || (id.length() == 0)) throw new IllegalArgumentException("ID cannot be null or empty");
-	/*  31 */     if (type == null) throw new IllegalArgumentException("Release type cannot be null");
+
 	/*  32 */     if ((mainClass == null) || (mainClass.length() == 0)) throw new IllegalArgumentException("Main class cannot be null or empty");
 	/*  33 */     if (minecraftArguments == null) throw new IllegalArgumentException("Process arguments cannot be null or empty");
-	/*     */ 
+ 
 	/*  35 */     this.id = id;
-	/*  38 */     this.type = type;
+	/*  38 */     
 	/*  39 */     this.mainClass = mainClass;
 	/*  40 */     this.libraries = new ArrayList<Library>();
 	/*  41 */     this.minecraftArguments = minecraftArguments;
 	/*     */   }
 	/*     */ 
-	/*     */ 
 	/*     */   public String getId()
 	/*     */   {
 	/*  54 */     return this.id;
 	/*     */   }
-	/*     */ 
-	/*     */   public ReleaseType getType()
-	/*     */   {
-	/*  59 */     return this.type;
-	/*     */   }
-	/*     */
 	/*     */ 
 	/*     */   public Collection<Library> getLibraries() {
 	/*  73 */     return this.libraries;
@@ -58,13 +51,6 @@ public class ForgeVersion {
 	/*     */ 
 	/*     */   public String getMainClass() {
 	/*  77 */     return this.mainClass;
-	/*     */   }
-	/*     */ 
-	/*     */ 
-	/*     */   public void setType(ReleaseType type)
-	/*     */   {
-	/*  94 */     if (type == null) throw new IllegalArgumentException("Release type cannot be null");
-	/*  95 */     this.type = type;
 	/*     */   }
 	/*     */ 
 	/*     */   public void setMainClass(String mainClass) {
@@ -84,7 +70,7 @@ public class ForgeVersion {
 	/* 112 */     return result;
 	/*     */   }
 	/*     */ 
-	/*     */   public Collection<File> getClassPath(OperatingSystem os, File base) {
+	/*     */   public Collection<File> getClassPath(File base) {
 	/* 116 */     Collection<Library> libraries = getRelevantLibraries();
 	/* 117 */     Collection<File> result = new ArrayList<File>();
 	/*     */ 
@@ -104,7 +90,7 @@ public class ForgeVersion {
 	/* 132 */     Collection<String> result = new ArrayList<String>();
 	/*     */ 
 	/* 134 */     for (Library library : libraries) {
-	/* 135 */       Map<?, ?> natives = library.getNatives();
+	/* 135 */       Map<OperatingSystem, String> natives = library.getNatives();
 	/*     */ 
 	/* 137 */       if ((natives != null) && (natives.containsKey(os))) {
 	/* 138 */         result.add("libraries/" + library.getArtifactPath((String)natives.get(os)));
@@ -138,7 +124,7 @@ public class ForgeVersion {
 	/* 167 */         String natives = (String)library.getNatives().get(os);
 	/* 168 */         if (natives != null)
 	/* 169 */           file = library.getArtifactPath(natives);
-	/*     */       
+	   
 					}else {
 	/* 172 */         file = library.getArtifactPath();
 	/*     */       }

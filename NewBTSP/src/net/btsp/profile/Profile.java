@@ -1,3 +1,7 @@
+
+
+
+
 package net.btsp.profile;
 
 
@@ -15,6 +19,7 @@ public Profile(String name, BaseVersion base, ForgeVersion forge, ModPack pack){
 	this.base = base;
 	this.forge = forge;
 	this.name = name;
+	
 }
 
 public String getMainClass() {
