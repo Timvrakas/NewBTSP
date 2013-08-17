@@ -38,12 +38,17 @@ import javax.swing.JTextArea;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 import javax.swing.text.JTextComponent;
+import javax.swing.AbstractAction;
+import java.awt.event.ActionEvent;
+import javax.swing.Action;
+import java.awt.event.ActionListener;
 
 public class MainGUI {
 
 	static JTextPane Console;
-	private JFrame frame;
+	private JFrame BtspLauncher;
 	private JTextField IPaddress;
+	private final Action action = new SwingAction();
 
 	/**
 	 * Launch the application.
@@ -53,7 +58,7 @@ public class MainGUI {
 			public void run() {
 				try {
 					MainGUI window = new MainGUI();
-					window.frame.setVisible(true);
+					window.BtspLauncher.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -72,23 +77,24 @@ public class MainGUI {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		frame = new JFrame();
-		frame.setBounds(100, 100, 600, 400);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		BtspLauncher = new JFrame();
+		BtspLauncher.setTitle("BTSP Launcher");
+		BtspLauncher.setBounds(100, 100, 600, 400);
+		BtspLauncher.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		SpringLayout springLayout = new SpringLayout();
-		frame.getContentPane().setLayout(springLayout);
+		BtspLauncher.getContentPane().setLayout(springLayout);
 		
 		JPanel TabArea = new JPanel();
-		springLayout.putConstraint(SpringLayout.SOUTH, TabArea, 0, SpringLayout.SOUTH, frame.getContentPane());
+		springLayout.putConstraint(SpringLayout.SOUTH, TabArea, 0, SpringLayout.SOUTH, BtspLauncher.getContentPane());
 		TabArea.setBackground(SystemColor.window);
-		springLayout.putConstraint(SpringLayout.NORTH, TabArea, 0, SpringLayout.NORTH, frame.getContentPane());
-		springLayout.putConstraint(SpringLayout.WEST, TabArea, 0, SpringLayout.WEST, frame.getContentPane());
-		frame.getContentPane().add(TabArea);
+		springLayout.putConstraint(SpringLayout.NORTH, TabArea, 0, SpringLayout.NORTH, BtspLauncher.getContentPane());
+		springLayout.putConstraint(SpringLayout.WEST, TabArea, 0, SpringLayout.WEST, BtspLauncher.getContentPane());
+		BtspLauncher.getContentPane().add(TabArea);
 		
 		JPanel LoginArea = new JPanel();
-		springLayout.putConstraint(SpringLayout.WEST, LoginArea, -136, SpringLayout.EAST, frame.getContentPane());
+		springLayout.putConstraint(SpringLayout.WEST, LoginArea, -136, SpringLayout.EAST, BtspLauncher.getContentPane());
 		springLayout.putConstraint(SpringLayout.EAST, TabArea, 0, SpringLayout.WEST, LoginArea);
-		springLayout.putConstraint(SpringLayout.SOUTH, LoginArea, 0, SpringLayout.SOUTH, frame.getContentPane());
+		springLayout.putConstraint(SpringLayout.SOUTH, LoginArea, 0, SpringLayout.SOUTH, BtspLauncher.getContentPane());
 		LoginArea.setBackground(SystemColor.window);
 		SpringLayout sl_TabArea = new SpringLayout();
 		TabArea.setLayout(sl_TabArea);
@@ -123,12 +129,12 @@ public class MainGUI {
 		sl_TabArea.putConstraint(SpringLayout.SOUTH, progressBar, -10, SpringLayout.SOUTH, TabArea);
 		sl_TabArea.putConstraint(SpringLayout.EAST, progressBar, -10, SpringLayout.EAST, TabArea);
 		TabArea.add(progressBar);
-		springLayout.putConstraint(SpringLayout.NORTH, LoginArea, 0, SpringLayout.NORTH, frame.getContentPane());
-		springLayout.putConstraint(SpringLayout.EAST, LoginArea, 0, SpringLayout.EAST, frame.getContentPane());
-		frame.getContentPane().add(LoginArea);
+		springLayout.putConstraint(SpringLayout.NORTH, LoginArea, 0, SpringLayout.NORTH, BtspLauncher.getContentPane());
+		springLayout.putConstraint(SpringLayout.EAST, LoginArea, 0, SpringLayout.EAST, BtspLauncher.getContentPane());
+		BtspLauncher.getContentPane().add(LoginArea);
 		SpringLayout sl_LoginArea = new SpringLayout();
 		LoginArea.setLayout(sl_LoginArea);
-		JLabel lblAccountStatus = new JLabel("Logged in: Yes");
+		JLabel lblAccountStatus = new JLabel("Logged in: No");
 		sl_LoginArea.putConstraint(SpringLayout.NORTH, lblAccountStatus, 10, SpringLayout.NORTH, LoginArea);
 		sl_LoginArea.putConstraint(SpringLayout.WEST, lblAccountStatus, 10, SpringLayout.WEST, LoginArea);
 		sl_LoginArea.putConstraint(SpringLayout.EAST, lblAccountStatus, -10, SpringLayout.EAST, LoginArea);
@@ -139,7 +145,13 @@ public class MainGUI {
 		sl_LoginArea.putConstraint(SpringLayout.EAST, lblUsername, -10, SpringLayout.EAST, LoginArea);
 		LoginArea.add(lblUsername);
 		
-		JButton btnSignOut = new JButton("Sign Out");
+		JButton btnSignOut = new JButton("Sign In");
+		btnSignOut.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				LoginWindow login = new LoginWindow();
+				login.setVisible(true);
+			}
+		});
 		sl_LoginArea.putConstraint(SpringLayout.NORTH, btnSignOut, 6, SpringLayout.SOUTH, lblUsername);
 		sl_LoginArea.putConstraint(SpringLayout.WEST, btnSignOut, 10, SpringLayout.WEST, LoginArea);
 		sl_LoginArea.putConstraint(SpringLayout.EAST, btnSignOut, -10, SpringLayout.EAST, LoginArea);
@@ -153,6 +165,11 @@ public class MainGUI {
 		LoginArea.add(separator_1);
 		
 		JButton btnAddProfile = new JButton("Add Profile");
+		btnAddProfile.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+			}
+		});
 		sl_LoginArea.putConstraint(SpringLayout.EAST, btnAddProfile, -10, SpringLayout.EAST, LoginArea);
 		sl_LoginArea.putConstraint(SpringLayout.SOUTH, separator_1, -3, SpringLayout.NORTH, btnAddProfile);
 		sl_LoginArea.putConstraint(SpringLayout.NORTH, btnAddProfile, 6, SpringLayout.SOUTH, btnSignOut);
@@ -160,6 +177,12 @@ public class MainGUI {
 		LoginArea.add(btnAddProfile);
 		
 		JButton btnSettings = new JButton("Settings");
+		btnSettings.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				GlobalSettings g = new GlobalSettings();
+				g.setVisible(true);
+			}
+		});
 		sl_LoginArea.putConstraint(SpringLayout.NORTH, btnSettings, 6, SpringLayout.SOUTH, btnAddProfile);
 		sl_LoginArea.putConstraint(SpringLayout.WEST, btnSettings, 10, SpringLayout.WEST, LoginArea);
 		sl_LoginArea.putConstraint(SpringLayout.EAST, btnSettings, -10, SpringLayout.EAST, LoginArea);
@@ -228,4 +251,12 @@ public class MainGUI {
 	    System.setErr(new PrintStream(out, true));
 	  }
 
+	private class SwingAction extends AbstractAction {
+		public SwingAction() {
+			putValue(NAME, "SwingAction");
+			putValue(SHORT_DESCRIPTION, "Some short description");
+		}
+		public void actionPerformed(ActionEvent e) {
+		}
+	}
 }
